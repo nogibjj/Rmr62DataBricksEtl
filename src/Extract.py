@@ -38,11 +38,12 @@ import pandas as pd
 from pyspark.sql.types import DoubleType, IntegerType
 from pyspark.sql import SparkSession
 import logging
+from requests.exceptions import RequestException
 
 # Configure logging
 logging.basicConfig(filename='/extract_error.log', level=logging.ERROR)
 
-try: # pylint: disable
+try:
     spark = SparkSession.builder.appName("Extract_data").getOrCreate()
     nba_link = r'https://www.basketball-reference.com/leagues/NBA_2024_per_game.html#per_game_stats'
     data = extract(nba_link)
@@ -75,6 +76,6 @@ try: # pylint: disable
         df_ = df_.withColumn(column_name, df_[column_name].cast(DoubleType()))
     
     df_.write.mode("overwrite").format("delta").saveAsTable("NBA_PLAYERS_Data_23")
-except Exception as e: # pylint: disable
+except RequestException as e:
     logging.error(str(e))
     print(e)
