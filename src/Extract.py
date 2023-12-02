@@ -28,7 +28,7 @@ def extract_from_html_content(html: str) -> None:
     return df
 
 def extract(url: str) -> None:
-    response = requests.get(url)
+    response = requests.get(url, timeout=20)
     html_content = response.text
     return extract_from_html_content(html_content)
 
@@ -60,7 +60,7 @@ try:
     checkpoint_path = "/checkpoint/path"
 
     # Convert pandas dataframe to PySpark dataframe
-    df = spark.createDataFrame(data)
+    df_ = spark.createDataFrame(data)
     
     # Transform Str columns to appropriate types
     int_cols = ['Age', 'G', 'GS']
@@ -69,12 +69,14 @@ try:
                   'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS']
      
     for column_name in int_cols:
-        df = df.withColumn(column_name, df[column_name].cast(IntegerType()))
+        df_ = df_.withColumn(column_name, df_[column_name].cast(IntegerType()))
     
     for column_name in float_cols:
-        df = df.withColumn(column_name, df[column_name].cast(DoubleType()))
+        df_ = df_.withColumn(column_name, df_[column_name].cast(DoubleType()))
     
-    df.write.mode("overwrite").format("delta").saveAsTable("NBA_PLAYERS_Data_23")
+    df_.write.mode("overwrite").format("delta").saveAsTable("NBA_PLAYERS_Data_23")
+except TypeError:
+    print('Type Error')
 except Exception as e:
     logging.error(str(e))
     print(e)
@@ -82,8 +84,3 @@ except Exception as e:
 # COMMAND ----------
 
 data
-
-# COMMAND ----------
-
-delta_table_name = "nba_players_table_3"
-spark.sql(f"DROP TABLE IF EXISTS {delta_table_name}")
