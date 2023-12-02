@@ -3,11 +3,12 @@
 
 [![PythonCiCd](https://github.com/nogibjj/Rmr62DataBricksEtl/actions/workflows/python_ci_cd.yml/badge.svg)](https://github.com/nogibjj/Rmr62DataBricksEtl/actions/workflows/python_ci_cd.yml)
 ---
+**Walk Through Youtube Video**
+[Youtube](https://youtu.be/xF_9ttjuagc)
 
 ## **Summary**
 
-The project demonstrates an end-to-end data processing pipeline using Databricks notebooks and Azure Databricks workflows. The pipeline walks through an example of ingesting raw NBA teams data, transforming the data, and running analyses on the processed data. The Pipiline starts by extracting data from an online table located on the nba reference website. The pipeline uses SQL queries to create and insert data into a prepared_nba_data table. The table consists of columns such as custrom_metric (custom team ranking), Average Points per Player, Average Defensive Rebounds per Player, Average turnover per player, and more, and the processed data is stored into a delta lake table. 
-
+The project demonstrates an end-to-end data processing pipeline using Azure Databricks notebooks and workflows. The pipeline walks through an example of ingesting raw NBA teams data, transforming the data, and running analyses on the processed data. The Pipeline starts by extracting data from an online table located on the nba reference website. The pipeline uses SQL queries to create and insert data into a prepared_nba_data table. The table consists of columns such as custrom_metric (custom team ranking), Average Points per Player, Average Defensive Rebounds per Player, Average turnover per player, and more, and the processed data is stored into a delta lake table. 
 
 ---
 
@@ -89,4 +90,4 @@ Therefore, scheduling workflows can help with automating data processing and ana
 
 Our analysis, incorporating mental adjustments to account for variables like injuries and other macro-level factors, can uncover potential edge in the odds presented by sports trading websites versus our fairs. By carefully considering these adjustments, we seek to identify strategic opportunities for betting on conference and championship winners in the NBA. The goal is to capitalize on our nuanced understanding of the game, translating it into a more accurate assessment of teams' performance and, subsequently, making informed bets that may yield favorable outcomes.
 
-For example, by looking at results obtained today, we can see that our model suggets Miami Heats is a little underpriced today to win the South East Division. The market thinks Orlando Magic is more likely to win the South East Division, but our model does not agree. Therefore, we have identified a bubble where potentially profitable bets may be made.
+For example, by looking at results obtained today, we can see that our model suggets Miami Heats is a little underpriced to win the South East Division. The market thinks Orlando Magic is more likely to win the South East Division, but our model does not agree. Therefore, we have identified a bubble where potentially profitable bets may be made.
