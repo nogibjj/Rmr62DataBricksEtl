@@ -42,7 +42,7 @@ import logging
 # Configure logging
 logging.basicConfig(filename='/extract_error.log', level=logging.ERROR)
 
-try:
+try: # noqa
     spark = SparkSession.builder.appName("Extract_data").getOrCreate()
     nba_link = r'https://www.basketball-reference.com/leagues/NBA_2024_per_game.html#per_game_stats'
     data = extract(nba_link)
@@ -75,12 +75,6 @@ try:
         df_ = df_.withColumn(column_name, df_[column_name].cast(DoubleType()))
     
     df_.write.mode("overwrite").format("delta").saveAsTable("NBA_PLAYERS_Data_23")
-except TypeError:
-    print('Type Error')
-except Exception as e:
+except Exception as e: # noqa
     logging.error(str(e))
     print(e)
-
-# COMMAND ----------
-
-data
