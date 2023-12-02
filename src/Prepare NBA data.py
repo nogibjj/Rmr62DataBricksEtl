@@ -204,6 +204,11 @@
 
 # COMMAND ----------
 
+from pyspark.sql import SparkSession
+
+# Create a SparkSession
+spark = SparkSession.builder.getOrCreate()
+
 # Data quality validation
 # Read the prepared_nba_data table into a Spark DataFrame
 prepared_nba_data = spark.table("prepared_nba_data")

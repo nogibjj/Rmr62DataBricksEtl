@@ -1,6 +1,10 @@
 # Databricks notebook source
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pyspark.sql import SparkSession
+
+# Create a SparkSession
+spark = SparkSession.builder.getOrCreate()
 
 query = "SELECT * FROM prepared_nba_data"
 query_result = spark.sql(query)
@@ -19,7 +23,6 @@ plt.show()
 
 # COMMAND ----------
 
-import matplotlib.pyplot as plt
 import numpy as np
 
 # Create a copy of the data and remove the team name column

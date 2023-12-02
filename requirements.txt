@@ -11,3 +11,6 @@ uvicorn==0.18.3
 databricks-sql-connector
 python-dotenv
 pyspark
+matplotlib
+seaborn
+bs4

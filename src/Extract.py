@@ -35,7 +35,7 @@ def extract(url: str) -> None:
 # COMMAND ----------
 
 import pandas as pd
-from pyspark.sql.types import DoubleType, IntegerType, StringType, StructType, StructField
+from pyspark.sql.types import DoubleType, IntegerType
 from pyspark.sql import SparkSession
 import logging
 
@@ -78,10 +78,6 @@ try:
 except Exception as e:
     logging.error(str(e))
     print(e)
-
-# COMMAND ----------
-
-df
 
 # COMMAND ----------
 
