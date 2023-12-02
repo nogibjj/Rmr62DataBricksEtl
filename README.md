@@ -1,18 +1,13 @@
-# Databricks End to End Demo
+# Databricks End-to-End ETL for Custom Nba Team Rankings
 ### by Rakeen Rouf
 
-[![PythonCiCd](https://github.com/rmr327/DataBricksEndtoEndDemo/actions/workflows/python_ci_cd.yml/badge.svg)](https://github.com/rmr327/DataBricksEndtoEndDemo/actions/workflows/python_ci_cd.yml)
+[![PythonCiCd](https://github.com/nogibjj/Rmr62DataBricksEtl/actions/workflows/python_ci_cd.yml/badge.svg)](https://github.com/nogibjj/Rmr62DataBricksEtl/actions/workflows/python_ci_cd.yml)
 ---
 
 ## **Summary**
 
-The project demonstrates an end-to-end data processing pipeline using Databricks notebooks and Azure Databricks workflows. The pipeline walks through an example of ingesting raw data, transforming data, and running analyses on the processed data. The pipeline uses SQL queries to create and insert data into a prepared_song_data table. The table consists of columns such as artist name, duration, release, tempo, and more, and the processed data is stored into this table.
+The project demonstrates an end-to-end data processing pipeline using Databricks notebooks and Azure Databricks workflows. The pipeline walks through an example of ingesting raw NBA teams data, transforming the data, and running analyses on the processed data. The Pipiline starts by extracting data from an online table located on the nba reference website. The pipeline uses SQL queries to create and insert data into a prepared_nba_data table. The table consists of columns such as custrom_metric (custom team ranking), Average Points per Player, Average Defensive Rebounds per Player, Average turnover per player, and more, and the processed data is stored into a delta lake table. 
 
-The project also highlights that Databricks recommends using the declarative interface for building reliable, maintainable, and testable data processing pipelines called Delta Live Tables.
-
-Overall, the project serves as a good starting point for those looking to learn about data pipelines and how to implement them in Azure Databricks.
-
-** Done by following instruction guide from data bricks.
 
 ---
 
@@ -20,51 +15,57 @@ Overall, the project serves as a good starting point for those looking to learn 
 
 We start by ingesting some songs data, then we transform it and load it into a table, then we perform some analyis on in.
 
-![image](https://github.com/rmr327/DataBricksEndtoEndDemo/assets/36940292/17584460-80e1-4970-99e4-43e863545104)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/031d03ce-e94b-4649-85dd-bef4b6e1acaf)
 
 Examples of succesful data pipeline work flows can be seen below.
 
-![image](https://github.com/rmr327/DataBricksEndtoEndDemo/assets/36940292/3a821c16-c463-41f4-beed-3a2e18f36661)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/93a48fbd-4c78-4532-a654-2cb1d50d3a00)
 
 ---
 
-### **Data Ingestion**
+### **Data Extraction**
 
-The code below creates a streaming DataFrame (Databricks Delta Table) from a folder "/databricks-datasets/songs/data-001/" that contains tab-separated CSV files named "song_data". It specifies a schema for the song_data table which includes fields such as artist_id, song_hotness, title, year, etc. that will be used to define the structure and types of the data to be read.
+This notebook extracts data from a table on Basketball Reference website using Python BeautifulSoup package and writes it to a Delta table in Databricks. The pandas DataFrame is cleaned and PySpark DataFrame is created based on the schema definition that specifies the appropriate data types. Finally, PySpark DataFrame is written into a Delta table using the write.format() function.
 
-It uses the cloudFiles format to read files from the cloud, then specifies options for the format to use "csv" and the separator to be "\t".
+The function extract_from_html_content() uses BeautifulSoup package to extract the table contents from the HTML source code and transform it to a pandas DataFrame. Then, a schema definition is created, and PySpark DataFrame is created by using the schema definition with the createDataFrame() function.
 
-Finally, it writes the data to a checkpoint location "/tmp/pipeline_get_started/_checkpoint/song_data" and outputs it to a Databricks Delta Table with a name of table_name which in this case is "song_data".
+If an error occurs during the data extraction, an error message will be written to a log file named extract_error.log. The logging module is used to handle potential exceptions and store the error messages.
 
-The trigger(availableNow=True) option specifies that the query should be triggerable immediately upon startup of the Stream, without waiting for any data to arrive. It doesn't wait, i.e it will treat empty directories as available for processing.
+The implementation showcases how to extract web data into a PySpark DataFrame, transform the data, and save it to a Delta table using Databricks in a single notebook. The logging feature provides a way to log the error messages for easier debugging of the program.
 
-![image](https://github.com/rmr327/DataBricksEndtoEndDemo/assets/36940292/d9f6eef4-8437-45a8-9954-a1e9ba0144e8)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/d687f703-9820-46c5-9f50-36816b29e657)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/0f6fe11e-1776-447e-bf78-19355abe2103)
 
-### **Data Transformation /Preparation**
 
-The code below creates a table named prepared_song_data and inserts data from another table named song_data.
+### **Data Transformation & Load**
 
-The CREATE TABLE statement specifies the schema for the prepared_song_data table consisting of columns artist_id (string), artist_name (string), duration (double), release (string), tempo (double), time_signature (double), title (string), year (double) and processed_time (timestamp).
+This notebook reads the NBA player data from the previosly specified delta lake table and transforms the data into a form that is suitable for team ranking analysis. This involves computing various statistics for each team, normalizing the statistics using min-max normalization, and ranking the teams based on a custom metric. The results are then stored in another delta lake table in the Databricks environment.
 
-Then the INSERT INTO statement fills the prepared_song_data table with data from the song_data table. It is required that the schema of the tables match to avoid errors. The SELECT statement selects data from the song_data table and, instead of the current_timestamp() function, uses the function SYSDATE() to get the current system date and time as timestamp and inserts that timestamp value into the processed_time column of the prepared_song_data table.
+Moreover, this notebook performs data quality checks on the prepared data to ensure that it is valid and suitable for analysis. In particular, it checks for duplicate rows using SQL queries and PySpark commands. Data quality checks are important because they help ensure that the results of the analysis are accurate and reliable. If the data quality checks indicate any problems with the data, further investigation and cleaning may be necessary.
 
-This query is written in SQL syntax and executed using Spark's SQL engine, making it a Spark SQL query.
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/e661418f-1f5a-4e45-a8c4-2d3acf0004c8)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/a79db1a7-1ee0-412f-b340-5f9a572da1eb)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/1b5eaf17-9df9-4aa0-8c2d-5a820b930399)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/75e36175-e67a-4d34-a91f-4379a3be36a9)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/ad602bec-34f1-4020-ab2a-ba90ff00d930)
 
-![image](https://github.com/rmr327/DataBricksEndtoEndDemo/assets/36940292/d98839e6-f58d-4193-8939-070b4140562a)
+Data validation
+
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/0159d216-64e9-4ca9-8c2e-d82940a6b1e6)
+
 
 ### **Data Analysis**
 
-The SQL code below counts the number of songs by artist per year where year is greater than 0 by grouping the artist name and year fields in prepared_song_data. It returns the result sorted by descending count of songs and year.
+This notebook demonstrates the use of Databricks and several data analysis and visualization tools, such as Spark SQL, Pandas, Matplotlib, and Seaborn, to analyze and visualize NBA team rankings data. The notebook imports data from a prepared Spark delta lake table, converts it to a Pandas DataFrame, and then performs several operations to explore the data and create visualizations. The code blocks include examples of how to retrieve and manipulate data, create bar plots, scatter plots, and heatmaps, normalize data, and rotate x-tick labels.
 
-This query is written in SQL syntax and executed using Spark's SQL engine, making it a Spark SQL query.
+The graph below shows our custom team rankings for the 2024 NBA season as of Dec 1 2024.
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/e9970756-bffc-488e-9adc-6a3b43d3d226)
 
-![image](https://github.com/rmr327/DataBricksEndtoEndDemo/assets/36940292/17646df8-246f-4baa-99da-3287a3c958df)
 
-The SQL code below selects artist name, song title and tempo from table prepared_song_data, where Time signature is 4 and tempo is between 100 and 140.
+The graph below shows our custom team rankings broken down by each category for the 2024 NBA season as of Dec 1 2024.
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/ec080cd0-7433-4159-a046-2c460ae773b8)
 
-This query is written in SQL syntax and executed using Spark's SQL engine, making it a Spark SQL query.
-
-![image](https://github.com/rmr327/DataBricksEndtoEndDemo/assets/36940292/43e79c31-b39b-4058-838d-b7ca290f1550)
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/7d0475cb-685d-46e7-a2ff-5ad5e378dae8)
 
 ## **Triggering Workflows**
 
@@ -77,3 +78,8 @@ Another way to schedule workflows is by creating a cron job based on time interv
 In both cases above, these workflows run within the context of a Databricks job. You may want to consider how often your data source is updating or how fast data is expected to be processed before setting up a schedule.
 
 Therefore, scheduling workflows can help with automating data processing and analysis tasks, as well as help manage large-scale data processing pipelines in a more efficient way.
+
+
+`The worflow for this project is triggered to run every Friday.`
+
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/8c5f9487-6a76-4ff3-8d93-86ba104ef472)
