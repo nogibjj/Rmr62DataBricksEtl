@@ -63,9 +63,10 @@ The graph below shows our custom team rankings for the 2024 NBA season as of Dec
 
 
 The graph below shows our custom team rankings broken down by each category for the 2024 NBA season as of Dec 1 2024.
-![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/ec080cd0-7433-4159-a046-2c460ae773b8)
 
+![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/ec080cd0-7433-4159-a046-2c460ae773b8)
 ![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/7d0475cb-685d-46e7-a2ff-5ad5e378dae8)
+
 
 ## **Triggering Workflows**
 
@@ -83,3 +84,9 @@ Therefore, scheduling workflows can help with automating data processing and ana
 `The worflow for this project is triggered to run every Friday.`
 
 ![image](https://github.com/nogibjj/Rmr62DataBricksEtl/assets/36940292/8c5f9487-6a76-4ff3-8d93-86ba104ef472)
+
+## Actionable and data-driven recommendations to a hypothetical management team
+
+Our analysis, incorporating mental adjustments to account for variables like injuries and other macro-level factors, can uncover potential edge in the odds presented by sports trading websites versus our fairs. By carefully considering these adjustments, we seek to identify strategic opportunities for betting on conference and championship winners in the NBA. The goal is to capitalize on our nuanced understanding of the game, translating it into a more accurate assessment of teams' performance and, subsequently, making informed bets that may yield favorable outcomes.
+
+For example, by looking at results obtained today, we can see that our model suggets Miami Heats is a little underpriced today to win the South East Division. The market thinks Orlando Magic is more likely to win the South East Division, but our model does not agree. Therefore, we have identified a bubble where potentially profitable bets may be made.
